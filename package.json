@@ -1,0 +1,36 @@
+{
+  "name": "anypoint-utils",
+  "version": "1.0.0",
+  "description": "Javascript for Anypoint API Usage",
+  "private": false,
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "jest": "^24.5.0",
+    "jsdoc": "^3.5.5",
+    "nodemon": "^1.18.10"
+  },
+  "engines": {
+    "node": "^4.3"
+  },
+  "scripts": {
+    "pretest": "eslint --ignore-path .gitignore .",
+    "test": "jest --coverage --logHeapUsage -w=2"
+  },
+  "dependencies": {
+    "@types/console-stamp": "^0.2.32",
+    "aes-js": "^3.1.2",
+    "aes256": "^1.0.4",
+    "console": "^0.7.2",
+    "console-stamp": "^0.2.7",
+    "minimist": "^1.2.0",
+    "node-fetch": "^2.3.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "shelljs": "^0.8.3"
+  }
+}
