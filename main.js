@@ -48,7 +48,7 @@ class AnypointUtils {
    * e.g. 5b2f78c9-3c43-4c24-9b22-8139d4ccc4fb.
    */
 
-  async function getToken() {
+  async getToken() {
     const posting = `{ "username": ${this.username},"password":${this.password} }`;
     const options = {
       method: 'POST',
