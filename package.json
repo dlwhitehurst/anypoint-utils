@@ -1,8 +1,8 @@
 {
   "name": "anypoint-utils",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Javascript for Anypoint API Usage",
-  "private": false,
+  "main": "main.js",
   "cacheDirectories": [
     "node_modules"
   ],
