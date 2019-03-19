@@ -49,7 +49,7 @@ class AnypointUtils {
    */
 
   async getToken() {
-    const posting = `{ "username": ${this.username},"password":${this.password} }`;
+    const posting = '{ username: ' + this.username + ',password: ' + this.password + '}';
     const options = {
       method: 'POST',
       uri: 'https://anypoint.mulesoft.com/accounts/login',
