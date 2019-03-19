@@ -33,7 +33,6 @@ class AnypointUtils {
     this.password = password;
   }
 
-
   /**
    * This asynchronous function is used to call the Anypoint Platform API for administration
    * and management.
@@ -49,7 +48,6 @@ class AnypointUtils {
    */
 
   async getToken() {
-    //const posting = '{ username: ' + this.username + ',password: ' + this.password + '}';
     const options = {
       method: 'POST',
       uri: 'https://anypoint.mulesoft.com/accounts/login',
@@ -64,7 +62,38 @@ class AnypointUtils {
 
     return data.access_token;
   }
+
+  /**
+   * This asynchronous function is used to call the Anypoint Platform API for administration
+   * and management.
+   *
+   * The function makes an HTTP GET to:
+   *    https://anypoint.mulesoft.com/accounts/api/me
+   *
+   * ... all for the service account user (see constants.js).
+   *
+   * @author David L. Whitehurst.
+   * @since  1.0.0
+   *
+   * @return {Promise} - returns a Promise, but resolves to a string
+   * e.g. c72db99c-a5a7-4c89-9d53-66512523f678
+   */
+
+  async getOrganizationId(token) {
+    const options = {
+      method: 'GET',
+      uri: 'https://anypoint.mulesoft.com/accounts/api/me',
+      headers: { Authorization: `bearer ${token}` },
+      json: true,
+    };
+
+    const data = await request(options)
+      .then(response => response)
+      .catch(err => err);
+
+    return data.user.organizationId;
+  }
+
 }
 
 module.exports = AnypointUtils;
-

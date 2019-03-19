@@ -1,6 +1,6 @@
 {
   "name": "anypoint-utils",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Javascript for Anypoint API Usage",
   "main": "main.js",
   "cacheDirectories": [
@@ -29,7 +29,6 @@
     "console": "^0.7.2",
     "console-stamp": "^0.2.7",
     "minimist": "^1.2.0",
-    "node-fetch": "^2.3.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "shelljs": "^0.8.3"
