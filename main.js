@@ -19,7 +19,7 @@
  * environment using NodeJS.
  *
  * @link   https://anypoint.mulesoft.com/exchange/portals/anypoint-platform/
- * @file   apiService.js
+ * @file   main.js
  * @author David L. Whitehurst.
  * @since  1.0.0
  */
@@ -69,8 +69,6 @@ class AnypointUtils {
    *
    * The function makes an HTTP GET to:
    *    https://anypoint.mulesoft.com/accounts/api/me
-   *
-   * ... all for the service account user (see constants.js).
    *
    * @author David L. Whitehurst.
    * @since  1.0.0
