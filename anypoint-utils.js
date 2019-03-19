@@ -26,7 +26,7 @@
 
 const request = require('request-promise');
 
-class AnypointUtils {
+class anypoint-utils {
 
   constructor(username, password) {
     this.username = username;
@@ -68,5 +68,5 @@ class AnypointUtils {
   }
 }
 
-module.exports = AnypointUtils;
+module.exports = anypoint-utils;
 
