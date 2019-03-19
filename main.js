@@ -26,7 +26,7 @@
 
 const request = require('request-promise');
 
-class anypoint-utils {
+class AnypointUtils {
 
   constructor(username, password) {
     this.username = username;
@@ -48,9 +48,7 @@ class anypoint-utils {
    * e.g. 5b2f78c9-3c43-4c24-9b22-8139d4ccc4fb.
    */
 
-  async function
-
-  getToken() {
+  async function getToken() {
     const posting = `{ "username": ${this.username},"password":${this.password} }`;
     const options = {
       method: 'POST',
@@ -68,5 +66,5 @@ class anypoint-utils {
   }
 }
 
-module.exports = anypoint-utils;
+module.exports = AnypointUtils;
 
