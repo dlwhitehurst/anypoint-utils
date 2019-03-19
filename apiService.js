@@ -24,46 +24,49 @@
  * @since  1.0.0
  */
 
-/* jshint strict:false */
-
 const request = require('request-promise');
 
-/**
- * This asynchronous function is used to call the Anypoint Platform API for administration
- * and management.
- *
- * The function makes an HTTP POST to:
- *    https://anypoint.mulesoft.com/accounts/login
- *
- * @author David L. Whitehurst.
- * @since  1.0.0
- *
- * @return {Promise} - returns a Promise, but resolves to a string
- * e.g. 5b2f78c9-3c43-4c24-9b22-8139d4ccc4fb.
- */
+class AnypointUtils {
 
-async function getToken(username, password) {
-  const posting = `{ "username": ${versionId},"password":${apiId} }`;
-  const options = {
-    method: 'POST',
-    uri: 'https://anypoint.mulesoft.com/accounts/login',
-    body: JSON.parse(posting),
-    headers: { 'Content-Type': 'application/json' },
-    json: true,
-  };
+  constructor(username, password) {
+    this.username = username;
+    this.password = password;
+  }
 
-  const data = await request(options)
-    .then(response => response)
-    .catch(err => err);
 
-  return data.access_token;
+  /**
+   * This asynchronous function is used to call the Anypoint Platform API for administration
+   * and management.
+   *
+   * The function makes an HTTP POST to:
+   *    https://anypoint.mulesoft.com/accounts/login
+   *
+   * @author David L. Whitehurst.
+   * @since  1.0.0
+   *
+   * @return {Promise} - returns a Promise, but resolves to a string
+   * e.g. 5b2f78c9-3c43-4c24-9b22-8139d4ccc4fb.
+   */
+
+  async function
+
+  getToken() {
+    const posting = `{ "username": ${this.username},"password":${this.password} }`;
+    const options = {
+      method: 'POST',
+      uri: 'https://anypoint.mulesoft.com/accounts/login',
+      body: JSON.parse(posting),
+      headers: { 'Content-Type': 'application/json' },
+      json: true,
+    };
+
+    const data = await request(options)
+      .then(response => response)
+      .catch(err => err);
+
+    return data.access_token;
+  }
 }
 
+module.exports = AnypointUtils;
 
-/**
- * Node Module Exports
- */
-
-module.exports = {
-  getToken,
-};

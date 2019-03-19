@@ -1,11 +1,12 @@
 {
   "name": "anypoint-utils",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Javascript for Anypoint API Usage",
   "private": false,
   "cacheDirectories": [
     "node_modules"
   ],
+  "homepage": "https://github.com/dlwhitehurst/anypoint-utils",
   "devDependencies": {
     "eslint": "^5.15.1",
     "eslint-config-airbnb-base": "^13.1.0",
