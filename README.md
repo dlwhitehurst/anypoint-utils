@@ -16,26 +16,45 @@ and hostings on Cloudhub or On-Premise.
 This package is under construction. Two functions are provided here
 for testing. These are:
 
-- getToken()
-- getOrganizationId(token)
+- getToken
+- getOrganizationid
+- getDefaultEnvironmentId
+- getEnvironments
+- getApplications
+- getApis
+- getEnvApis
+- deleteApplication
+- getApplicationId
+- getVersionId
+- getApiId
+- getApi
+- getExchangeAssets
+- getExchangeAssetById
+- getExchangeGroup
+- createClientApplication
+- createContractRequestingAccess
+- createApiManagerInstance
 
 Example usage code is provided here for your reference.
 
 ```
-// index.js
-"use strict";
+// tmp.js
 
-const anypoint_utils = require('anypoint-utils');
-const utils = new anypoint_utils('anypointuser','somepassword');
+const AnypointUtils = require('./main');
+require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
+
+const s = new AnypointUtils('dlw-ms3-2', 'Leche4Moi2Consume');
 
 async function main() {
-  const authToken = await utils.getToken();
-  console.log('token: ' + authToken);
+  const authtoken = await s.getToken();
+  console.info(`token: ${authtoken}`);
 
-  const orgId = await utils.getOrganizationId(authToken);
-  console.log('orgId: ' + orgId);
+  const orgId = await AnypointUtils.getOrganizationId(authtoken);
+  console.info(`orgId: ${orgId}`);
+
+  const envId = await AnypointUtils.getDefaultEnvironmentId(authtoken);
+  console.info(`envId: ${envId}`);
 }
-
 
 main();
 ```

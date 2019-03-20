@@ -24,7 +24,6 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "jest": "^24.5.0",
-    "jsdoc": "^3.5.5",
     "nodemon": "^1.18.10"
   },
   "engines": {
@@ -36,8 +35,6 @@
   },
   "dependencies": {
     "@types/console-stamp": "^0.2.32",
-    "aes-js": "^3.1.2",
-    "aes256": "^1.0.4",
     "console": "^0.7.2",
     "console-stamp": "^0.2.7",
     "minimist": "^1.2.0",

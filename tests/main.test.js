@@ -1,4 +1,4 @@
-// apiService.test.js
+// main.test.js
 
 function main() {
   // async function getToken()
