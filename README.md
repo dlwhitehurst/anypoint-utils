@@ -41,7 +41,7 @@ Functions implemented are shown here:
 
 ### Example Code
 
-```
+``` javascript
 // tmp.js
 
 const AnypointUtils = require('./main');
