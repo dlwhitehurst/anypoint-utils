@@ -1,5 +1,13 @@
 # anypoint-utils
 
+[![npm][npm-image]][npm-url]
+[![downloads][downloads-image]][downloads-url]
+
+[npm-image]: https://img.shields.io/npm/v/anypoint-utils.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/anypoint-utils
+[downloads-image]: https://img.shields.io/npm/dm/anypoint-utils.svg?style=flat-square
+[downloads-url]: https://npmjs.org/package/anypoint-utils
+
 This npm package provides utility methods that can be used within
 your CI/CD environment and MuleSoft API release management strategy.
 MuleSoft provides REST API resources for managing your Mule products
