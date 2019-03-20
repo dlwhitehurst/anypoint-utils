@@ -47,7 +47,7 @@ Functions implemented are shown here:
 const AnypointUtils = require('./main');
 require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 
-const s = new AnypointUtils('dlw-ms3-2', 'Leche4Moi2Consume');
+const s = new AnypointUtils('user', 'password');
 
 async function main() {
   const authtoken = await s.getToken();
