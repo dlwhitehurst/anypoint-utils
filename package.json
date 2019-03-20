@@ -1,6 +1,6 @@
 {
   "name": "anypoint-utils",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Javascript for Anypoint API Usage",
   "main": "main.js",
   "author": {

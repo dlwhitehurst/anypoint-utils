@@ -13,8 +13,9 @@ your CI/CD environment and MuleSoft API release management strategy.
 MuleSoft provides REST API resources for managing your Mule products
 and hostings on Cloudhub or On-Premise. 
 
-This package is under construction. Two functions are provided here
-for testing. These are:
+### Implementation
+
+Functions implemented are shown here:
 
 - getToken
 - getOrganizationid
@@ -35,7 +36,10 @@ for testing. These are:
 - createContractRequestingAccess
 - createApiManagerInstance
 
-Example usage code is provided here for your reference.
+### Installation
+```$ npm install anypoint-utils --save```
+
+### Example Code
 
 ```
 // tmp.js
