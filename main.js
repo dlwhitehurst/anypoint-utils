@@ -595,6 +595,19 @@ class AnypointUtils {
     return retVal;
   }
 
+  /**
+   * This asynchronous function is used to call the Anypoint Platform API for administration
+   * and management.
+   *
+   * The function is used to get a boolean (true/false), or true if client application
+   * exists by the name given in the arguments.
+   *
+   * @author David L. Whitehurst.
+   * @since  1.0.15
+   *
+   * @return {Promise} - returns a Promise but resolves to a JSON object representing the instance.
+   */
+
   static async promoteApiCreatingNewInstance(token, organizationId, environmentId, originalApiId) {
     const posting = `{"instanceLabel": "emp-sapi (promoted)", "promote": { "originApiId": ${originalApiId}, 
     "policies": { "allEntities": true }, "tiers": { "allEntities": true }, "alerts": { "allEntities": true }}}`;
