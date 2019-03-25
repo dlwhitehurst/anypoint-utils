@@ -32,12 +32,12 @@ function main() {
     expect(mock).toHaveBeenCalledWith('5b2f78c9-3c43-4c24-9b22-8139d4ccc4fb', 'emp-xapi-int');
   });
 
-  // async function createApiManagerInstance(assetId, version, groupId)
-  it('returns a string id from 3 arguments for createApiManagerInstance', () => {
+  // async function createApiManagerInstance(assetId, version, groupId, environmentName)
+  it('returns a string id from 4 arguments for createApiManagerInstance', () => {
     const mock = jest.fn();
     mock.mockReturnValue('1577523455');
-    expect(mock('emp-xapi', '1.0.0', 'c72db99c-a5a7-4c89-9d53-66512523f678')).toEqual('1577523455');
-    expect(mock).toHaveBeenCalledWith('emp-xapi', '1.0.0', 'c72db99c-a5a7-4c89-9d53-66512523f678');
+    expect(mock('emp-xapi', '1.0.0', 'c72db99c-a5a7-4c89-9d53-66512523f678', 'Sandbox2')).toEqual('1577523455');
+    expect(mock).toHaveBeenCalledWith('emp-xapi', '1.0.0', 'c72db99c-a5a7-4c89-9d53-66512523f678', 'Sandbox2');
   });
 
   // async function getVersionId(token, apiId, productVersion)
@@ -131,6 +131,14 @@ function main() {
   // async function getDefaultEnvironmentId(token)
   it('returns a string id from the token given for getDefaultEnvironmentId', () => {
 
+  });
+
+  // async function getEnvironmentIdByName(token, environmentName)
+  it('returns a string id for the environmentName given', () => {
+    const mock = jest.fn();
+    mock.mockReturnValue('1234');
+    expect(mock('5b2f78c9-3c43-4c24-9b22-8139d4ccc4fb', 'Sandbox2')).toEqual('1234');
+    expect(mock).toHaveBeenCalledWith('5b2f78c9-3c43-4c24-9b22-8139d4ccc4fb', 'Sandbox2');
   });
 }
 

@@ -3,7 +3,7 @@
 const AnypointUtils = require('./main');
 require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 
-const s = new AnypointUtils('dlw-ms3-2', 'Leche4Moi2Consume');
+const s = new AnypointUtils('user', 'password');
 
 async function main() {
   const authtoken = await s.getToken();
@@ -12,8 +12,14 @@ async function main() {
   const orgId = await AnypointUtils.getOrganizationId(authtoken);
   console.info(`orgId: ${orgId}`);
 
-  const envId = await AnypointUtils.getDefaultEnvironmentId(authtoken);
-  console.info(`envId: ${envId}`);
+  const envs = await AnypointUtils.getEnvironments(authtoken);
+  console.info(envs);
+
+  //  const envId = await AnypointUtils.getDefaultEnvironmentId(authtoken);
+  //  console.info(`envId: ${envId}`);
+
+  const stuff = await AnypointUtils.createApiManagerInstance(authtoken, 'emp-xapi', '1.0.0', orgId, 'Sandbox2');
+  console.info(`This id is used for API auto-discovery. Id:${stuff}`);
 }
 
 main();

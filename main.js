@@ -141,8 +141,7 @@ class AnypointUtils {
     const orgId = await AnypointUtils.getOrganizationId(token);
     const options = {
       method: 'GET',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}
-      /environments`,
+      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/environments`,
       headers: { Authorization: `bearer ${token}` },
       json: true,
     };
@@ -522,7 +521,8 @@ class AnypointUtils {
    * and management.
    *
    * The function makes a call to the API Manager API to POST a request to create a new API Manager
-   * instance and return the appId.
+   * instance and return the appId. This new instance is created in the environment specified by
+   * name in the argument.
    *
    * @author David L. Whitehurst.
    * @since  1.0.15
@@ -530,10 +530,10 @@ class AnypointUtils {
    * @return Promise - returns a Promise, resolves to a string id.
    */
 
-  static async createApiManagerInstance(token, assetId, version, groupId) {
+  static async createApiManagerInstance(token, assetId, version, groupId, environmentName) {
     const posting = `{"endpoint": { "type": "rest-api", "uri": "http://google.com", "proxyUri": null, "muleVersion4OrAbove": true, "isCloudHub": false }, "instanceLabel": "${assetId}","spec": { "assetId": "${assetId}", "version": "${version}", "groupId": "${groupId}" }}`;
     const orgId = await AnypointUtils.getOrganizationId(token);
-    const envId = await AnypointUtils.getDefaultEnvironmentId(token);
+    const envId = await AnypointUtils.getEnvironmentIdByName(token, environmentName);
     const options = {
       method: 'POST',
       uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${orgId}/environments/${envId}/apis`,
@@ -622,6 +622,31 @@ class AnypointUtils {
     return request(options)
       .then(response => response)
       .catch(err => err);
+  }
+
+  /**
+   * This asynchronous function is used to call the Anypoint Platform API for administration
+   * and management.
+   *
+   * The function is used to get an environment id for the environment name given.
+   *
+   * @author David L. Whitehurst.
+   * @since  1.0.15
+   *
+   * @return {Promise} - returns a Promise but resolves to a JSON object representing the instance.
+   */
+
+  static async getEnvironmentIdByName(token, environmentName) {
+    let retVal;
+    const data = await AnypointUtils.getEnvironments(token);
+    console.log(data);
+    for (let i = 0; i < data.length; i += 1) {
+      const obj = data[i];
+      if (obj.name.valueOf() === environmentName) {
+        retVal = obj.id;
+      }
+    }
+    return retVal;
   }
 }
 
