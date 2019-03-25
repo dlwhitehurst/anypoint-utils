@@ -123,6 +123,10 @@ __promoteApiCreatingNewInstance(token, organizationId, environmentId, originalAp
 
 This function essentially promotes an existing (registered) API into a new environment, specified by the environment id, and using the original API id. A new API id for runtime auto-discovery is returned by the function.
 
+__getEnvironmentIdByName(token, environmentName)__
+
+This function returns the id for the environment name given.
+
 ### Notes
 
 As of version 1.0.18 there are still many additions needed to this, however they will be added as work 

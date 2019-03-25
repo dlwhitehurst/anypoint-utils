@@ -639,7 +639,6 @@ class AnypointUtils {
   static async getEnvironmentIdByName(token, environmentName) {
     let retVal;
     const data = await AnypointUtils.getEnvironments(token);
-    console.log(data);
     for (let i = 0; i < data.length; i += 1) {
       const obj = data[i];
       if (obj.name.valueOf() === environmentName) {
