@@ -33,8 +33,8 @@ async function main() {
   const orgId = await AnypointUtils.getOrganizationId(authtoken);
   console.info(`orgId: ${orgId}`);
 
-  const envId = await AnypointUtils.getDefaultEnvironmentId(authtoken);
-  console.info(`envId: ${envId}`);
+  const stuff = await AnypointUtils.createApiManagerInstance(authtoken, 'emp-xapi', '1.0.0', orgId, 'Sandbox2');
+  console.info(`This id is used for API auto-discovery. Id:${stuff}`);
 }
 
 main();
