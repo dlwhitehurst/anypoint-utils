@@ -1,1 +1,8 @@
-npm run test
+language: node_js
+node_js:
+  - "node"
+  - "10"
+  - "7"
+  - "0"
+
+script: npm run test
