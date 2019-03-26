@@ -2,7 +2,7 @@
 
 [![npm][npm-image]][npm-url]
 [![downloads][downloads-image]][downloads-url]
-
+[![Build Status](https://travis-ci.org/dlwhitehurst/anypoint-utils.svg?branch=master)](https://travis-ci.org/dlwhitehurst/anypoint-utils)
 [npm-image]: https://img.shields.io/npm/v/anypoint-utils.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/anypoint-utils
 [downloads-image]: https://img.shields.io/npm/dm/anypoint-utils.svg?style=flat-square
