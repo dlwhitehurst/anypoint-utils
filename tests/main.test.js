@@ -72,7 +72,7 @@ function main() {
     expect(mock).toHaveBeenCalledWith('5b2f78c9-3c43-4c24-9b22-8139d4ccc4fb', 'emp-xapi-int');
   });
 
-  // async function createContractRequestingAccess(token, apiId, versionId, applicationId)
+  // async function createContractWithAsset(token, clientAppName, primeArtifactName)
   it('returns an array of two credentials from 4 arguments for createContractRequestingAccess', () => {
 
   });

@@ -88,15 +88,11 @@ __deleteApplication(token, appId)__
 
 This function will delete a client application (remember it's a representational object only) using a bearer token (authorization) and the client application's application id or primary key.
 
-__createContractRequestingAccess(token, apiId, versionId, applicationId)__
-
-This function creates a contract between the client application and the registered API it wants to consume. This contract supplies a client Id and a client Secret. These credentials are required before the client application can use or consume the API.
-
-__getApplicationId(token, applicationName)__
+__getApplicationIdByName(token, applicationName)__
 
 This function gets the application id for client application name given, along with the bearer token (authorization) of course.
 
-__getApiId(token, apiName)__
+__getApiIdByName(token, apiName)__
 
 This function gets the API id for the API name or artifact id given.
 

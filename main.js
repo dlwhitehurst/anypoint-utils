@@ -384,21 +384,28 @@ class AnypointUtils {
    * This asynchronous function is used to call the Anypoint Platform API for administration
    * and management.
    *
-   * The function creates a contract between a client application and a dependent API asset.
+   * The function assumes that a client application has already been created. The function
+   * will create a contract between the client application and the dependency asset. The
+   * function will return an array of credentials i.e. clientId and clientSecret
    *
    * @author David L. Whitehurst.
    * @since  1.0.15
    *
-   * @return Promise - returns a Promise, but resolves to an array of credentials.
+   * @return {Promise} - returns a Promise but resolves to an array of credential values.
    */
 
-  static async createContractRequestingAccess(token, apiId, versionId, applicationId) {
+  static async createContractWithAsset(token, clientAppName, primeArtifactName) {
+    const appId = await AnypointUtils.getApplicationId(token, clientAppName);
+    const apiId = await AnypointUtils.getApiId(token, primeArtifactName);
+    const versionId = await AnypointUtils.getVersionId(token, apiId, 'v1');
+
     const posting = `{"apiVersionId": ${versionId},"applicationId":${apiId},"partyId": "","partyName": "", "requestedTierId":null, "acceptedTerms": false}`;
     const orgId = await AnypointUtils.getOrganizationId(token);
+
     const options = {
       method: 'POST',
       uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
-        orgId}/applications/${applicationId}/contracts`,
+        orgId}/applications/${appId}/contracts`,
       body: JSON.parse(posting),
       headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
       json: true,
@@ -424,7 +431,7 @@ class AnypointUtils {
    * @return Promise - returns a Promise (pending resolve() or reject()).
    */
 
-  static async getApplicationId(token, applicationName) { // e.g. test-client
+  static async getApplicationIdByName(token, applicationName) { // e.g. test-client
     let appId;
     const data = await AnypointUtils.getApplications(token);
     for (let i = 0; i < data.applications.length; i += 1) {
@@ -449,7 +456,7 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise (pending resolve() or reject()).
    */
 
-  static async getApiId(token, apiName) {
+  static async getApiIdByName(token, apiName) {
     let apiId;
     const data = await AnypointUtils.getEnvApis(token);
     for (let i = 0; i < data.assets.length; i += 1) {
@@ -547,27 +554,6 @@ class AnypointUtils {
       .catch(err => err);
 
     return data.id;
-  }
-
-  /**
-   * This asynchronous function is used to call the Anypoint Platform API for administration
-   * and management.
-   *
-   * The function assumes that a client application has already been created. The function
-   * will create a contract between the client application and the dependency asset. The
-   * function will return an array of credentials i.e. clientId and clientSecret
-   *
-   * @author David L. Whitehurst.
-   * @since  1.0.15
-   *
-   * @return {Promise} - returns a Promise but resolves to an array of credential values.
-   */
-
-  static async createContractWithAsset(token, clientAppName, primeArtifactName) {
-    const appId = await AnypointUtils.getApplicationId(token, clientAppName);
-    const apiId = await AnypointUtils.getApiId(token, primeArtifactName);
-    const versionId = await AnypointUtils.getVersionId(token, apiId, 'v1');
-    return AnypointUtils.createContractRequestingAccess(token, apiId, versionId, appId);
   }
 
   /**
