@@ -17,7 +17,7 @@ and hostings on Cloudhub or On-Premise.
 ### Installation
 ```$ npm install anypoint-utils --save```
 
-### Example Code
+### Example Code (with use of corp proxy)
 
 ``` javascript
 // tmp.js
@@ -25,7 +25,7 @@ and hostings on Cloudhub or On-Premise.
 const AnypointUtils = require('./main');
 require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 
-const s = new AnypointUtils('user', 'password');
+const s = new AnypointUtils('user', 'password', 'http://corp.proxy.int:8080');
 
 async function main() {
   const authtoken = await s.getToken();
@@ -40,6 +40,8 @@ async function main() {
 
 main();
 ```
+Note: if proxy not used, send 'null'
+
 ### Functions
 
 These are the current functions that have been coded so far. A listing is given here with comments for your reference.
