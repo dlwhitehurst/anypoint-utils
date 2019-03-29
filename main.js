@@ -28,9 +28,10 @@ const request = require('request-promise');
 const constants = require('./constants.js');
 
 class AnypointUtils {
-  constructor(username, password) {
+  constructor(username, password, proxy) {
     this.username = username;
     this.password = password;
+    this.proxy = proxy;
   }
 
   /**
@@ -48,13 +49,25 @@ class AnypointUtils {
    */
 
   async getToken() {
-    const options = {
-      method: 'POST',
-      uri: 'https://anypoint.mulesoft.com/accounts/login',
-      body: { username: this.username, password: this.password },
-      headers: { 'Content-Type': 'application/json' },
-      json: true,
-    };
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'POST',
+        uri: 'https://anypoint.mulesoft.com/accounts/login',
+        proxy: this.proxy,
+        body: { username: this.username, password: this.password },
+        headers: { 'Content-Type': 'application/json' },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'POST',
+        uri: 'https://anypoint.mulesoft.com/accounts/login',
+        body: { username: this.username, password: this.password },
+        headers: { 'Content-Type': 'application/json' },
+        json: true,
+      };
+    }
 
     const data = await request(options)
       .then(response => response)
@@ -77,13 +90,24 @@ class AnypointUtils {
    * e.g. c72db99c-a5a7-4c89-9d53-66512523f678
    */
 
-  static async getOrganizationId(token) {
-    const options = {
-      method: 'GET',
-      uri: 'https://anypoint.mulesoft.com/accounts/api/me',
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getOrganizationId(token) {
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: 'https://anypoint.mulesoft.com/accounts/api/me',
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: 'https://anypoint.mulesoft.com/accounts/api/me',
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     const data = await request(options)
       .then(response => response)
@@ -106,15 +130,27 @@ class AnypointUtils {
    * e.g. ae58bace-7f16-4804-a53f-20acefe7d6ad.
    */
 
-  static async getDefaultEnvironmentId(token) {
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const options = {
-      method: 'GET',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
-        orgId}/environments/default`,
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getDefaultEnvironmentId(token) {
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/environments/default`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/environments/default`,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     const data = await request(options)
       .then(response => response)
@@ -137,20 +173,29 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to JSON array of environments.
    */
 
-  static async getEnvironments(token) {
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const options = {
-      method: 'GET',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/environments`,
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getEnvironments(token) {
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/environments`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/environments`,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
-    const data = await request(options)
+    return request(options)
       .then(response => response)
       .catch(err => err);
-
-    return data;
   }
 
   /**
@@ -167,14 +212,25 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to a JSON array of applications.
    */
 
-  static async getApplications(token) {
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const options = {
-      method: 'GET',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/applications`,
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getApplications(token) {
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/applications`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/applications`,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -195,15 +251,27 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to a JSON array of APIs.
    */
 
-  static async getApis(token) {
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const options = {
-      method: 'GET',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
-        orgId}/apis`,
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getApis(token) {
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/apis`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/apis`,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -223,16 +291,28 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to a JSON array of APIs.
    */
 
-  static async getEnvApis(token) {
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const envId = await AnypointUtils.getDefaultEnvironmentId(token);
-    const options = {
-      method: 'GET',
-      uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${
-        orgId}/environments/${envId}/apis`,
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getEnvApis(token) {
+    const orgId = await this.getOrganizationId(token);
+    const envId = await this.getDefaultEnvironmentId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${
+          orgId}/environments/${envId}/apis`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${
+          orgId}/environments/${envId}/apis`,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -251,15 +331,27 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to a JSON array of business groups.
    */
 
-  static async getExchangeGroups(token) {
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const options = {
-      method: 'GET',
-      uri: `https://anypoint.mulesoft.com/exchange/api/v1/organizations/${
-        orgId}/groups`,
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getExchangeGroups(token) {
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/exchange/api/v1/organizations/${
+          orgId}/groups`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/exchange/api/v1/organizations/${
+          orgId}/groups`,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -278,13 +370,24 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to a JSON object for the asset.
    */
 
-  static async getExchangeAssetById(token, groupId, assetId) {
-    const options = {
-      method: 'GET',
-      uri: `https://anypoint.mulesoft.com/exchange/api/v1/assets/${groupId}/${assetId}`,
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getExchangeAssetById(token, groupId, assetId) {
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/exchange/api/v1/assets/${groupId}/${assetId}`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/exchange/api/v1/assets/${groupId}/${assetId}`,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -304,13 +407,24 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to a JSON array of assets.
    */
 
-  static async getExchangeAssets(token) {
-    const options = {
-      method: 'GET',
-      uri: 'https://anypoint.mulesoft.com/exchange/api/v1/assets/',
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getExchangeAssets(token) {
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: 'https://anypoint.mulesoft.com/exchange/api/v1/assets/',
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: 'https://anypoint.mulesoft.com/exchange/api/v1/assets/',
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -330,21 +444,34 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to a JSON object, an application.
    */
 
-  static async createClientApplication(token, clientName) {
+  async createClientApplication(token, clientName) {
     const posting = constants.clientAppPostPart1
       + clientName
       + constants.clientAppPostPart2
       + clientName
       + constants.clientAppPostPart3;
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const options = {
-      method: 'POST',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
-        orgId}/applications`,
-      body: JSON.parse(posting),
-      headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
-      json: true,
-    };
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'POST',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/applications`,
+        proxy: this.proxy,
+        body: JSON.parse(posting),
+        headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'POST',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/applications`,
+        body: JSON.parse(posting),
+        headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -365,15 +492,27 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise, but resolves to undefined body, status 204 No Content.
    */
 
-  static async deleteApplication(token, appId) {
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const options = {
-      method: 'DELETE',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
-        orgId}/applications/${appId}`,
-      headers: { Authorization: `bearer ${token}` },
-      resolveWithFullResponse: true,
-    };
+  async deleteApplication(token, appId) {
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'DELETE',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/applications/${appId}`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        resolveWithFullResponse: true,
+      };
+    } else {
+      options = {
+        method: 'DELETE',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/applications/${appId}`,
+        headers: { Authorization: `bearer ${token}` },
+        resolveWithFullResponse: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -394,22 +533,34 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise but resolves to an array of credential values.
    */
 
-  static async createContractWithAsset(token, clientAppName, primeArtifactName) {
-    const appId = await AnypointUtils.getApplicationId(token, clientAppName);
-    const apiId = await AnypointUtils.getApiId(token, primeArtifactName);
-    const versionId = await AnypointUtils.getVersionId(token, apiId, 'v1');
+  async createContractWithAsset(token, clientAppName, primeArtifactName) {
+    const appId = await this.getApplicationIdByName(token, clientAppName);
+    const apiId = await this.getApiIdByName(token, primeArtifactName);
+    const versionId = await this.getVersionId(token, apiId, 'v1');
 
     const posting = `{"apiVersionId": ${versionId},"applicationId":${apiId},"partyId": "","partyName": "", "requestedTierId":null, "acceptedTerms": false}`;
-    const orgId = await AnypointUtils.getOrganizationId(token);
-
-    const options = {
-      method: 'POST',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
-        orgId}/applications/${appId}/contracts`,
-      body: JSON.parse(posting),
-      headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
-      json: true,
-    };
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'POST',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/applications/${appId}/contracts`,
+        proxy: this.proxy,
+        body: JSON.parse(posting),
+        headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'POST',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${
+          orgId}/applications/${appId}/contracts`,
+        body: JSON.parse(posting),
+        headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
+        json: true,
+      };
+    }
 
     const data = await request(options)
       .then(response => response)
@@ -431,9 +582,9 @@ class AnypointUtils {
    * @return Promise - returns a Promise (pending resolve() or reject()).
    */
 
-  static async getApplicationIdByName(token, applicationName) { // e.g. test-client
+  async getApplicationIdByName(token, applicationName) { // e.g. test-client
     let appId;
-    const data = await AnypointUtils.getApplications(token);
+    const data = await this.getApplications(token);
     for (let i = 0; i < data.applications.length; i += 1) {
       const obj = data.applications[i];
       if (obj.name.valueOf() === applicationName) {
@@ -456,9 +607,9 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise (pending resolve() or reject()).
    */
 
-  static async getApiIdByName(token, apiName) {
+  async getApiIdByName(token, apiName) {
     let apiId;
-    const data = await AnypointUtils.getEnvApis(token);
+    const data = await this.getEnvApis(token);
     for (let i = 0; i < data.assets.length; i += 1) {
       const obj = data.assets[i];
       if (obj.assetId.valueOf() === apiName) {
@@ -483,14 +634,25 @@ class AnypointUtils {
    * @return Promise - returns a Promise (pending resolve() or reject()).
    */
 
-  static async getApi(token, apiId) {
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const options = {
-      method: 'GET',
-      uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/apis/${apiId}`,
-      headers: { Authorization: `bearer ${token}` },
-      json: true,
-    };
+  async getApi(token, apiId) {
+    const orgId = await this.getOrganizationId(token);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/apis/${apiId}`,
+        proxy: this.proxy,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        uri: `https://anypoint.mulesoft.com/apiplatform/repository/v2/organizations/${orgId}/apis/${apiId}`,
+        headers: { Authorization: `bearer ${token}` },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -510,9 +672,9 @@ class AnypointUtils {
    * @return Promise - returns a Promise (pending resolve() or reject()).
    */
 
-  static async getVersionId(token, apiId, productVersion) {
+  async getVersionId(token, apiId, productVersion) {
     let versionId;
-    const data = await AnypointUtils.getApi(token, apiId);
+    const data = await this.getApi(token, apiId);
     for (let i = 0; i < data.versions.length; i += 1) {
       const obj = data.versions[i];
       if (obj.productVersion.valueOf() === productVersion) {
@@ -537,17 +699,29 @@ class AnypointUtils {
    * @return Promise - returns a Promise, resolves to a string id.
    */
 
-  static async createApiManagerInstance(token, assetId, version, groupId, environmentName) {
+  async createApiManagerInstance(token, assetId, version, groupId, environmentName) {
     const posting = `{"endpoint": { "type": "rest-api", "uri": "http://google.com", "proxyUri": null, "muleVersion4OrAbove": true, "isCloudHub": false }, "instanceLabel": "${assetId}","spec": { "assetId": "${assetId}", "version": "${version}", "groupId": "${groupId}" }}`;
-    const orgId = await AnypointUtils.getOrganizationId(token);
-    const envId = await AnypointUtils.getEnvironmentIdByName(token, environmentName);
-    const options = {
-      method: 'POST',
-      uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${orgId}/environments/${envId}/apis`,
-      body: JSON.parse(posting),
-      headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
-      json: true,
-    };
+    const orgId = await this.getOrganizationId(token);
+    const envId = await this.getEnvironmentIdByName(token, environmentName);
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'POST',
+        uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${orgId}/environments/${envId}/apis`,
+        proxy: this.proxy,
+        body: JSON.parse(posting),
+        headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'POST',
+        uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${orgId}/environments/${envId}/apis`,
+        body: JSON.parse(posting),
+        headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
+        json: true,
+      };
+    }
 
     const data = await request(options)
       .then(response => response)
@@ -569,9 +743,9 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise but resolves to an array of credential values.
    */
 
-  static async isClientApplicationByName(token, clientApplicationName) {
+  async isClientApplicationByName(token, clientApplicationName) {
     let retVal = false;
-    const data = await AnypointUtils.getApplications(token);
+    const data = await this.getApplications(token);
     for (let i = 0; i < data.applications.length; i += 1) {
       const obj = data.applications[i];
       if (obj.name.valueOf() === clientApplicationName) {
@@ -594,16 +768,28 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise but resolves to a JSON object representing the instance.
    */
 
-  static async promoteApiCreatingNewInstance(token, organizationId, environmentId, originalApiId) {
+  async promoteApiCreatingNewInstance(token, organizationId, environmentId, originalApiId) {
     const posting = `{"instanceLabel": "emp-sapi (promoted)", "promote": { "originApiId": ${originalApiId}, 
     "policies": { "allEntities": true }, "tiers": { "allEntities": true }, "alerts": { "allEntities": true }}}`;
-    const options = {
-      method: 'POST',
-      uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${organizationId}/environments/${environmentId}/apis`,
-      body: JSON.parse(posting),
-      headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
-      json: true,
-    };
+    let options;
+    if (this.proxy != null) {
+      options = {
+        method: 'POST',
+        uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${organizationId}/environments/${environmentId}/apis`,
+        proxy: this.proxy,
+        body: JSON.parse(posting),
+        headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
+        json: true,
+      };
+    } else {
+      options = {
+        method: 'POST',
+        uri: `https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${organizationId}/environments/${environmentId}/apis`,
+        body: JSON.parse(posting),
+        headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
+        json: true,
+      };
+    }
 
     return request(options)
       .then(response => response)
@@ -622,9 +808,9 @@ class AnypointUtils {
    * @return {Promise} - returns a Promise but resolves to a JSON object representing the instance.
    */
 
-  static async getEnvironmentIdByName(token, environmentName) {
+  async getEnvironmentIdByName(token, environmentName) {
     let retVal;
-    const data = await AnypointUtils.getEnvironments(token);
+    const data = await this.getEnvironments(token);
     for (let i = 0; i < data.length; i += 1) {
       const obj = data[i];
       if (obj.name.valueOf() === environmentName) {
